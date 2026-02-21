@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: telegram-prediction-bot
+    name: vip-kouame-predictions
     runtime: python
     plan: free
     
@@ -13,16 +13,7 @@ services:
       sizeGB: 1
     
     envVars:
-      - key: TELEGRAM_BOT_TOKEN
-        sync: false
-      - key: API_ID
-        sync: false
-      - key: API_HASH
-        sync: false
-      - key: USER_PHONE
-        sync: false
-      - key: CHANNEL_USERNAME
-        sync: false
       - key: PORT
         value: 10000
-        
+      # Les autres variables sont dans config.py !
+      

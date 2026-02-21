@@ -1,0 +1,57 @@
+services:
+  - type: web
+    name: telegram-prediction-bot
+    runtime: python
+    plan: free
+    region: frankfurt  # ou oregon, singapore, etc.
+    
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main.py
+    
+    # Health check pour garder le service actif
+    healthCheckPath: /health
+    
+    # =====================================================
+    # DISK PERSISTANT (Méthode 2 - Déclaratif)
+    # =====================================================
+    disk:
+      name: data              # Nom du volume
+      mountPath: /data        # Chemin de montage dans le conteneur
+      sizeGB: 1               # 1GB (maximum plan gratuit)
+    
+    # =====================================================
+    # VARIABLES D'ENVIRONNEMENT
+    # =====================================================
+    envVars:
+      # Bot Telegram (obligatoire)
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      
+      # Telethon - API User (obligatoire)
+      - key: API_ID
+        sync: false
+      - key: API_HASH
+        sync: false
+      - key: USER_PHONE
+        sync: false  # Format: +33612345678
+      
+      # Configuration canal (obligatoire)
+      - key: CHANNEL_USERNAME
+        sync: false  # Ex: mon_canal_vip (sans @)
+      
+      # Sécurité (optionnel mais recommandé)
+      - key: ADMIN_IDS
+        sync: false  # Ex: 123456789,987654321
+      
+      # Chemins persistant sur le disk
+      - key: DATABASE_PATH
+        value: /data/predictions.db
+      - key: SESSION_PATH
+        value: /data/telethon_session
+      
+      # Configuration Render
+      - key: PORT
+        value: 10000
+      - key: PYTHON_VERSION
+        value: 3.11.0
+        o
